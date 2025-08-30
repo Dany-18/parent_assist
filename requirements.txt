@@ -1,0 +1,6 @@
+Flask
+reportlab
+PyPDF2
+gTTS
+gunicorn
+

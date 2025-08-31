@@ -3,97 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <title>Student Report - Voice Assistant</title>
-  <style>
-    body { font-family: Arial, sans-serif; text-align: center; }
-    iframe { width: 80%; height: 600px; border: 2px solid #ccc; margin-top: 10px; }
-    #chat { margin-top: 20px; text-align: left; width: 80%; margin-left: auto; margin-right: auto; border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: auto; background: #f9f9f9; }
-    .logo { width: 120px; margin: 10px auto; display: block; }
-  </style>
 </head>
 <body>
-  <!-- Logo -->
-  <img src="/static/images/logo.png" class="logo" alt="Logo">
+  <h1>Student Report</h1>
+  <iframe src="{{ pdf_url }}" width="100%" height="600"></iframe>
 
-  <!-- PDF -->
-  <iframe src="{{ pdf_url }}"></iframe>
-
-  <!-- AI Assistant -->
   <h2>🎙️ AI Voice Assistant</h2>
-  <div id="chat"></div>
+  <p id="chat"><b>AI:</b> வணக்கம்! உங்களுக்கு உதவி வேண்டுமா?</p>
+
   <audio id="audio" autoplay hidden></audio>
 
-<script>
-function addChat(role, text){
-  document.getElementById("chat").innerHTML += "<b>"+role+":</b> "+text+"<br>";
-  document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
-}
+  <script>
+    function addChat(role, text){
+      document.getElementById("chat").innerHTML += "<br><b>"+role+":</b> "+text;
+    }
 
-async function ask(q){
-  addChat("You", q);
-  let res = await fetch("/ask_ai", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({rollno: "{{ rollno }}", question: q, lang: "{{ lang }}"})
-  });
-  let data = await res.json();
-  addChat("AI", data.answer);
+    async function ask(q){
+      addChat("You", q);
+      let res = await fetch("/ask_ai", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ question: q })
+      });
+      let data = await res.json();
+      addChat("AI", data.answer);
 
-  // Speak reply
-  document.getElementById("audio").src = "/tts?text=" + encodeURIComponent(data.answer) + "&lang={{ lang }}";
-}
+      document.getElementById("audio").src = "/tts?text=" + encodeURIComponent(data.answer) + "&lang=ta";
+    }
 
-// Improved Speech Recognition
-function startListening() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  let recognition = new SpeechRecognition();
+    function startListening() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      let recognition = new SpeechRecognition();
+      recognition.lang = "ta-IN";
+      recognition.interimResults = false;
+      recognition.continuous = false;
 
-  recognition.lang = {
-    "ta": "ta-IN",
-    "te": "te-IN",
-    "ml": "ml-IN",
-    "hi": "hi-IN"
-  }["{{ lang }}"] || "en-IN";
+      recognition.onresult = function(event) {
+        let transcript = event.results[0][0].transcript.trim();
+        ask(transcript);
+      };
 
-  recognition.interimResults = false;
-  recognition.continuous = false;
+      recognition.onerror = function(event) {
+        console.log("Speech error:", event.error);
+      };
 
-  recognition.onresult = function(event) {
-    let transcript = event.results[0][0].transcript.trim();
-    console.log("Heard:", transcript);
-    ask(transcript);
-  };
+      recognition.onend = function() {
+        setTimeout(startListening, 1000);
+      };
 
-  recognition.onerror = function(event) {
-    console.log("Speech error:", event.error);
-    setTimeout(startListening, 1500);
-  };
+      recognition.start();
+    }
 
-  recognition.onend = function() {
-    setTimeout(startListening, 1000);
-  };
-
-  recognition.start();
-}
-
-// Auto Greet after 5 sec
-window.onload = function(){
-  setTimeout(() => {
-    let greet = {
-      "ta": "வணக்கம்! உங்களுக்கு உதவி வேண்டுமா?",
-      "te": "హలో! నేను సహాయం చేయాలా?",
-      "ml": "നമസ്കാരം! നിങ്ങൾക്ക് സഹായം വേണോ?",
-      "hi": "नमस्ते! क्या आपको मदद चाहिए?"
-    }["{{ lang }}"] || "Hello! Do you need help?";
-
-    addChat("AI", greet);
-    document.getElementById("audio").src = "/tts?text=" + encodeURIComponent(greet) + "&lang={{ lang }}";
-
-    startListening();
-  }, 5000);
-};
-</script>
+    // Greet & start listening
+    window.onload = function(){
+      setTimeout(() => {
+        let greet = "வணக்கம்! உங்களுக்கு உதவி வேண்டுமா?";
+        addChat("AI", greet);
+        document.getElementById("audio").src = "/tts?text=" + encodeURIComponent(greet) + "&lang=ta";
+        startListening();
+      }, 3000);
+    }
+  </script>
 </body>
 </html>
+
+
 
 
 

@@ -5,160 +5,134 @@
 <title>Student Report</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-    body { font-family: Arial, sans-serif; background: #eef2f3; margin: 0; text-align: center; }
-    .report {
-        background: white; padding: 30px; border-radius: 12px;
-        max-width: 650px; margin: 50px auto;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2); text-align: left;
-    }
-    h2 { text-align: center; margin-bottom: 25px; }
-    .field { margin: 12px 0; font-size: 18px; }
-    strong { display: inline-block; width: 140px; }
-    img { width: 120px; display: block; margin: 0 auto 20px; }
-    .logout-btn {
-        display: block;
-        width: 120px;
-        margin: 20px auto 0;
-        padding: 10px;
-        background-color: #dc3545;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        text-align: center;
-        text-decoration: none;
-        font-size: 16px;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-    .logout-btn:hover { background-color: #b02a37; }
+body { font-family: Arial, sans-serif; background: #eef2f3; margin: 0; text-align: center; }
+.report { background: white; padding: 30px; border-radius: 12px; max-width: 650px; margin: 50px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.2); text-align: left; }
+h2 { text-align: center; margin-bottom: 25px; }
+.field { margin: 12px 0; font-size: 18px; }
+strong { display: inline-block; width: 140px; }
+img { width: 120px; display: block; margin: 0 auto 20px; }
+.logout-btn { display: block; width: 120px; margin: 20px auto 0; padding: 10px; background-color: #dc3545; color: white; border: none; border-radius: 8px; text-align: center; text-decoration: none; font-size: 16px; cursor: pointer; transition: 0.3s; }
+.logout-btn:hover { background-color: #b02a37; }
 </style>
 </head>
 <body>
-    <div class="report">
-        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="VELS Logo">
-        <h2>📖 Student Report</h2>
-        <div class="field"><strong>Roll Number:</strong> {{ rollno }}</div>
-        <div class="field"><strong>Name:</strong> {{ name }}</div>
-        <div class="field"><strong>Department:</strong> {{ department }}</div>
-        <div class="field"><strong>Marks:</strong> {{ marks }}</div>
-        <div class="field"><strong>Remarks:</strong> {{ remarks }}</div>
-        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
-    </div>
 
-    <!-- 🎙️ Fully Voice-Based AI -->
-    <audio id="audio" autoplay hidden></audio>
-    <script>
-    const lang = "{{ lang }}";
-    const audio = document.getElementById("audio");
+<div class="report">
+<img src="{{ url_for('static', filename='images/logo.png') }}" alt="VELS Logo">
+<h2>📖 Student Report</h2>
+<div class="field"><strong>Roll Number:</strong> {{ rollno }}</div>
+<div class="field"><strong>Name:</strong> {{ name }}</div>
+<div class="field"><strong>Department:</strong> {{ department }}</div>
+<div class="field"><strong>Marks:</strong> {{ marks }}</div>
+<div class="field"><strong>Remarks:</strong> {{ remarks }}</div>
+<a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+</div>
 
-    // Greetings in each language
-    const greetings = {
-        "ta": "வணக்கம்! உங்களுக்கு உதவி வேண்டுமா?",
-        "hi": "नमस्ते! क्या आपको सहायता चाहिए?",
-        "ml": "നമസ്കാരം! നിങ്ങൾക്ക് സഹായം വേണമോ?",
-        "te": "నమస్కారం! మీకు సహాయం కావాలా?",
-        "en": "Hello! Do you need any help?"
-    };
+<audio id="audio" autoplay hidden></audio>
 
-    // Student info
-    const studentInfo = {
-        "rollno": "{{ rollno }}",
-        "name": "{{ name }}",
-        "department": "{{ department }}",
-        "marks": "{{ marks }}",
-        "remarks": "{{ remarks }}"
-    };
+<script>
+const lang = "{{ lang }}";
+const audio = document.getElementById("audio");
 
-    // Keywords for questions & "yes" in each language
-    const questionKeywords = {
-        "ta": { "பெயர்":"name","துறை":"department","மதிப்பெண்":"marks","கருத்து":"remarks","ரோல்":"rollno","ஆம்":"yes" },
-        "hi": { "नाम":"name","विभाग":"department","अंक":"marks","टिप्पणी":"remarks","रोल":"rollno","हाँ":"yes" },
-        "ml": { "പേര്":"name","വിഭാഗം":"department","മാർക്ക്":"marks","അഭിപ്രായം":"remarks","റോൾ":"rollno","അതെ":"yes" },
-        "te": { "పేరు":"name","విభాగం":"department","మార్కులు":"marks","వ్యాఖ్యలు":"remarks","రోల్":"rollno","అవును":"yes" },
-        "en": { "name":"name","department":"department","marks":"marks","remarks":"remarks","roll":"rollno","yes":"yes" }
-    };
+const greetings = {
+"ta":"நான் இத்திலுள்ள ரோல், பெயர், மதிப்பெண் மற்றும் கருத்துகள் பற்றியே பேசுவேன். உங்களுக்கு கேள்வி கேட்க விருப்பமா?",
+"hi":"नमस्ते! मैं रोल नंबर, नाम, अंक और टिप्पणियों के बारे में बताऊँगा। क्या आप मुझसे सवाल पूछना चाहते हैं?",
+"ml":"ഹായ്! ഞാൻ റോൾ നമ്പർ, പേര്, മാർക്ക്, അഭിപ്രായങ്ങൾ എന്നിവയെ കുറിച്ച് പറയും. നിങ്ങൾക്ക് ചോദിക്കാൻ ആഗ്രഹമുണ്ടോ?",
+"te":"హాయ్! నేను రోల్, పేరు, మార్కులు, వ్యాఖ్యల గురించి చెప్పబోతున్నాను. మీరు ప్రశ్నలు అడగాలనుకుంటున్నారా?",
+"en":"Hello! I will tell you about Roll Number, Name, Marks, and Remarks. Do you want to ask any questions?"
+};
 
-    // Speak function
-    function speak(text) {
-        audio.src = "/tts?text=" + encodeURIComponent(text) + "&lang=" + lang;
-    }
+const studentInfo = {
+"rollno":"{{ rollno }}",
+"name":"{{ name }}",
+"department":"{{ department }}",
+"marks":"{{ marks }}",
+"remarks":"{{ remarks }}"
+};
 
-    // Start voice recognition
-    function startRecognition() {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if(!SpeechRecognition) { alert("Your browser does not support speech recognition."); return; }
+const questionKeywords = {
+"ta":{"பெயர்":"name","துறை":"department","மதிப்பெண்":"marks","கருத்து":"remarks","ரோல்":"rollno","ஆம்":"yes"},
+"hi":{"नाम":"name","विभाग":"department","अंक":"marks","टिप्पणी":"remarks","रोल":"rollno","हाँ":"yes"},
+"ml":{"പേര്":"name","വിഭാഗം":"department","മാർക്ക്":"marks","അഭിപ്രായം":"remarks","റോൾ":"rollno","അതെ":"yes"},
+"te":{"పేరు":"name","విభాగం":"department","మార్కులు":"marks","వ్యాఖ్యలు":"remarks","రోల్":"rollno","అవును":"yes"},
+"en":{"name":"name","department":"department","marks":"marks","remarks":"remarks","roll":"rollno","yes":"yes"}
+};
 
-        const recognition = new SpeechRecognition();
-        recognition.lang = lang; 
-        recognition.interimResults = false;
-        recognition.maxAlternatives = 1;
+const speechLangMap = {"ta":"ta-IN","hi":"hi-IN","ml":"ml-IN","te":"te-IN","en":"en-US"};
 
-        recognition.start();
+function speak(text) {
+    try { if (!audio.paused) audio.pause(); } catch(e){}
+    audio.src = "/tts?text=" + encodeURIComponent(text) + "&lang=" + lang;
+    audio.play().catch(e => console.log("Audio play failed:", e));
+}
 
-        recognition.onresult = function(event) {
-            const spoken = event.results[0][0].transcript.toLowerCase();
-            handleParentResponse(spoken);
-        };
-
-        recognition.onerror = function(event) {
-            console.log("Speech recognition error:", event.error);
-            setTimeout(startRecognition, 1000); // Retry
-        };
-
-        recognition.onend = function() {
-            setTimeout(startRecognition, 500); // Keep listening
-        };
-    }
-
-    // Handle parent response
-    function handleParentResponse(spoken) {
-        const keywords = questionKeywords[lang];
-        let answered = false;
-
-        // Check for yes/full report first
-        for(let key in keywords){
-            if(spoken.includes(key)){
-                if(keywords[key] === "yes"){
-                    const fullReport = {
-                        "ta": `ரோல் எண்: ${studentInfo.rollno}, பெயர்: ${studentInfo.name}, துறை: ${studentInfo.department}, மதிப்பெண்: ${studentInfo.marks}, கருத்து: ${studentInfo.remarks}`,
-                        "hi": `रोल नंबर: ${studentInfo.rollno}, नाम: ${studentInfo.name}, विभाग: ${studentInfo.department}, अंक: ${studentInfo.marks}, टिप्पणी: ${studentInfo.remarks}`,
-                        "ml": `റോൾ നമ്പർ: ${studentInfo.rollno}, പേര്: ${studentInfo.name}, വിഭാഗം: ${studentInfo.department}, മാർക്ക്: ${studentInfo.marks}, അഭിപ്രായം: ${studentInfo.remarks}`,
-                        "te": `రోల్ నంబర్: ${studentInfo.rollno}, పేరు: ${studentInfo.name}, విభాగం: ${studentInfo.department}, మార్కులు: ${studentInfo.marks}, వ్యాఖ్యలు: ${studentInfo.remarks}`,
-                        "en": `Roll Number: ${studentInfo.rollno}, Name: ${studentInfo.name}, Department: ${studentInfo.department}, Marks: ${studentInfo.marks}, Remarks: ${studentInfo.remarks}`
-                    };
-                    speak(fullReport[lang] || fullReport["en"]);
-                    answered = true;
-                    break;
-                } else {
-                    const infoKey = keywords[key];
-                    const infoValue = studentInfo[infoKey];
-                    speak(infoValue);
-                    answered = true;
-                    break;
-                }
+function handleParentResponse(spoken) {
+    const keywords = questionKeywords[lang];
+    let answered=false;
+    const normalizedSpoken = spoken.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+    for (let key in keywords) {
+        const normalizedKey = key.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+        if (normalizedSpoken.includes(normalizedKey.toLowerCase())) {
+            if (keywords[key]==="yes") {
+                const fullReport = {
+                    "ta":`ரோல் எண்: ${studentInfo.rollno}, பெயர்: ${studentInfo.name}, துறை: ${studentInfo.department}, மதிப்பெண்: ${studentInfo.marks}, கருத்து: ${studentInfo.remarks}`,
+                    "hi":`रोल नंबर: ${studentInfo.rollno}, नाम: ${studentInfo.name}, विभाग: ${studentInfo.department}, अंक: ${studentInfo.marks}, टिप्पणी: ${studentInfo.remarks}`,
+                    "ml":`റോൾ നമ്പർ: ${studentInfo.rollno}, പേര്: ${studentInfo.name}, വിഭാഗം: ${studentInfo.department}, മാർക്ക്: ${studentInfo.marks}, അഭിപ്രായം: ${studentInfo.remarks}`,
+                    "te":`రోల్ నంబర్: ${studentInfo.rollno}, పేరు: ${studentInfo.name}, విభాగం: ${studentInfo.department}, మార్కులు: ${studentInfo.marks}, వ్యాఖ్యలు: ${studentInfo.remarks}`,
+                    "en":`Roll Number: ${studentInfo.rollno}, Name: ${studentInfo.name}, Department: ${studentInfo.department}, Marks: ${studentInfo.marks}, Remarks: ${studentInfo.remarks}`
+                };
+                speak(fullReport[lang] || fullReport["en"]);
+            } else {
+                speak(studentInfo[keywords[key]]);
             }
-        }
-
-        if(!answered){
-            // Default response
-            const defaultResp = {
-                "ta":"மன்னிக்கவும், நான் ரோல் எண், பெயர், துறை, மதிப்பெண் மற்றும் கருத்துகள் பற்றி மட்டுமே பதில் கூறலாம்.",
-                "hi":"माफ़ करें, मैं केवल रोल नंबर, नाम, विभाग, अंक और टिप्पणियों के बारे में जवाब दे सकता हूँ।",
-                "ml":"ക്ഷമിക്കണം, ഞാൻ റോൾ നമ്പർ, പേര്, വിഭാഗം, മാർക്ക്, അഭിപ്രായങ്ങൾ സംബന്ധിച്ച് മാത്രമേ മറുപടി നൽകൂ.",
-                "te":"క్షమించండి, నేను రోల్ నంబర్, పేరు, విభాగం, మార్కులు మరియు వ్యాఖ్యల గురించి మాత్రమే జవాబు ఇవ్వగలను.",
-                "en":"Sorry, I can only answer about Roll Number, Name, Department, Marks, and Remarks."
-            };
-            speak(defaultResp[lang] || defaultResp["en"]);
+            answered=true;
+            break;
         }
     }
+    if(!answered) {
+        const defaultResp = {
+            "ta":"மன்னிக்கவும், நான் ரோல் எண், பெயர், துறை, மதிப்பெண் மற்றும் கருத்துகள் பற்றியே பதில் கூறுவேன்.",
+            "hi":"माफ़ करें, मैं केवल रोल नंबर, नाम, विभाग, अंक और टिप्पणियों के बारे में जवाब दे सकता हूँ।",
+            "ml":"ക്ഷമിക്കണം, ഞാൻ റോൾ നമ്പർ, പേര്, വിഭാഗം, മാർക്ക്, അഭിപ്രായങ്ങൾ സംബന്ധിച്ച് മാത്രമേ മറുപടി നൽകൂ.",
+            "te":"క్షమించండి, నేను రోల్ నంబర్, పేరు, విభాగం, మార్కులు మరియు వ్యాఖ్యల గురించి మాత్రమే జవాబు చెప్పగలను.",
+            "en":"Sorry, I can only answer about Roll Number, Name, Department, Marks, and Remarks."
+        };
+        speak(defaultResp[lang] || defaultResp["en"]);
+    }
+}
 
-    // Auto greet after 3 seconds
-    setTimeout(() => { 
-        speak(greetings[lang] || greetings["en"]);
-    }, 3000);
+function startRecognition() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if(!SpeechRecognition){ alert("Your browser does not support speech recognition."); return;}
+    const recognition = new SpeechRecognition();
+    recognition.lang = speechLangMap[lang] || "en-US";
+    recognition.continuous = true;
+    recognition.interimResults = false;
 
-    // Start listening after greeting
-    setTimeout(startRecognition, 5000);
-    </script>
+    recognition.onresult = function(event){
+        const spoken = event.results[event.results.length-1][0].transcript.toLowerCase();
+        handleParentResponse(spoken);
+    }
+
+    recognition.onerror = function(e){
+        console.log("Speech recognition error:", e.error);
+        setTimeout(startRecognition,1000);
+    }
+
+    recognition.onend=function(){
+        setTimeout(startRecognition,500);
+    }
+
+    recognition.start();
+}
+
+// Start greeting + recognition
+setTimeout(()=>{ speak(greetings[lang]||greetings["en"]); },1000);
+startRecognition();
+
+</script>
+
 </body>
 </html>
+
+

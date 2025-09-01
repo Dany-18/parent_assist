@@ -1,30 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Student Info Form</title>
+<meta charset="UTF-8">
+<title>Student Form</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body { font-family: Arial, sans-serif; background: #eef2f3; margin: 0; }
+    .container {
+        max-width: 450px;
+        margin: 50px auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        text-align: center;
+    }
+    img { width: 120px; margin-bottom: 20px; }
+    input, select {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 16px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+    button {
+        padding: 12px 25px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: 0.3s;
+    }
+    button:hover { background-color: #0056b3; }
+    .logout {
+        background-color: #dc3545;
+        margin-top: 15px;
+    }
+    .logout:hover { background-color: #b02a37; }
+</style>
 </head>
 <body>
-  <h2>📄 Generate Student Report Link</h2>
-  <form method="POST">
-    <label>Roll Number:</label>
-    <input type="text" name="rollno" required><br><br>
+<div class="container">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="VELS Logo">
+    <h2>📋 Student Profile</h2>
+    <form method="POST">
+        <input type="text" name="rollno" placeholder="Roll Number" required>
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="department" placeholder="Department" required>
+        <input type="text" name="marks" placeholder="Marks" required>
+        <input type="text" name="remarks" placeholder="Remarks" required>
 
-    <label>Student Name:</label>
-    <input type="text" name="name" required><br><br>
+        <label>Language:</label>
+        <select name="lang" required>
+            <option value="ta">Tamil</option>
+            <option value="hi">Hindi</option>
+            <option value="ml">Malayalam</option>
+            <option value="te">Telugu</option>
+            <option value="en">English</option>
+        </select>
 
-    <label>Department:</label>
-    <input type="text" name="dept" required><br><br>
-
-    <label>Preferred Language:</label>
-    <select name="lang">
-      <option value="ta">Tamil</option>
-      <option value="te">Telugu</option>
-      <option value="ml">Malayalam</option>
-      <option value="hi">Hindi</option>
-      <option value="en">English</option>
-    </select><br><br>
-
-    <button type="submit">Generate Report</button>
-  </form>
+        <button type="submit">Generate Report</button>
+    </form>
+    <form action="{{ url_for('logout') }}" method="get">
+        <button type="submit" class="logout">Logout</button>
+    </form>
+</div>
 </body>
 </html>
+
+
+
+
